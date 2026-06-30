@@ -126,7 +126,45 @@ print("Start Date:", sales_data["date"].min())
 print("End Date  :", sales_data["date"].max())
 print("Unique Dates:", sales_data["date"].nunique())
 
+print("\n" + "=" * 60)
+print("DATE CONTINUITY CHECK")
+print("=" * 60)
 
+stores_with_gaps = {}
+
+for store, group in sales_data.groupby("store_id"):
+
+    dates = group["date"].sort_values()
+
+    expected = pd.date_range(
+        start=dates.min(),
+        end=dates.max(),
+        freq="D"
+    )
+
+    missing = expected.difference(dates)
+
+    if len(missing) > 0:
+
+        stores_with_gaps[store] = len(missing)
+
+print("Stores checked:",
+      sales_data["store_id"].nunique())
+
+print("Stores with missing dates:",
+      len(stores_with_gaps))
+
+if len(stores_with_gaps) == 0:
+
+    print("All stores have complete daily timelines.")
+
+else:
+
+    print("\nFirst 10 stores with gaps:")
+
+    for store, n in list(stores_with_gaps.items())[:10]:
+
+        print(f"{store}: {n} missing days")
 # =============================================================================
 # STEP 9: Check Missing Values
 # =============================================================================
@@ -284,10 +322,26 @@ print(
     (store_counts == store_counts.max()).sum()
 )
 
+
+# STEP 15: Store-Level Sales Summary
+# =============================================================================
+# Compare the average sales across stores to evaluate
+# whether substantial heterogeneity exists between locations.
+
+store_sales_summary = (
+    sales_data
+    .groupby("store_id")["sales"]
+    .agg(mean_sales="mean")
+)
+
 print("\n" + "=" * 60)
-print("EDA COMPLETED")
+print("STORE-LEVEL SALES SUMMARY")
 print("=" * 60)
 
+print(store_sales_summary["mean_sales"].describe())
+
+
+print("\n" + "=" * 60)
 print(f"Total stores : {store_counts.size}")
 print(f"Total records: {len(sales_data)}")
 print(f"Date range   : {sales_data['date'].min().date()} to {sales_data['date'].max().date()}")

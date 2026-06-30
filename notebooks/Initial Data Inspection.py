@@ -8,6 +8,7 @@
 
 from pathlib import Path
 import pandas as pd
+import matplotlib.pyplot as plt
 
 # =============================================================================
 # Display Settings (EDA Only)
@@ -347,3 +348,47 @@ print(f"Total records: {len(sales_data)}")
 print(f"Date range   : {sales_data['date'].min().date()} to {sales_data['date'].max().date()}")
 print(f"Missing values: {sales_data.isnull().sum().sum()}")
 print(f"Duplicate rows: {sales_data.duplicated().sum()}")
+
+
+# =============================================================================
+# STEP 16: Sales Distribution
+# =============================================================================
+# Visualise the distribution of daily sales to understand
+# its overall shape, spread and potential skewness.
+
+plt.figure(figsize=(8,5))
+
+plt.hist(
+    sales_data["sales"],
+    bins=50
+)
+
+plt.title("Distribution of Daily Sales")
+plt.xlabel("Daily Sales")
+plt.ylabel("Frequency")
+
+plt.savefig(
+    "../results/figures/sales_distribution.png",
+    dpi=300,
+    bbox_inches="tight"
+)
+
+plt.show()
+
+plt.figure(figsize=(8,2))
+
+plt.boxplot(
+    sales_data["sales"],
+    vert=False
+)
+
+plt.title("Boxplot of Daily Sales")
+plt.xlabel("Daily Sales")
+
+plt.savefig(
+    "../results/figures/sales_boxplot.png",
+    dpi=300,
+    bbox_inches="tight"
+)
+
+plt.show()

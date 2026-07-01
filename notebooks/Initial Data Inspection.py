@@ -9,6 +9,7 @@
 from pathlib import Path
 import pandas as pd
 import matplotlib.pyplot as plt
+from utilsforecast.plotting import plot_series
 
 # =============================================================================
 # Display Settings (EDA Only)
@@ -392,3 +393,36 @@ plt.savefig(
 )
 
 plt.show()
+
+# =============================================================================
+# STEP 17: Company Daily Sales Trend
+# =============================================================================
+# Aggregate daily sales across all stores to visualise
+# the overall sales trend over time.
+
+company_sales = (
+    sales_data
+    .groupby("date", as_index=False)["sales"]
+    .sum()
+)
+
+print(company_sales.head())
+
+company_sales = company_sales.rename(
+    columns={
+        "date": "ds",
+        "sales": "y"
+    }
+)
+
+company_sales["unique_id"] = "Company"
+
+plot_series(
+    company_sales,
+    max_ids=1
+)
+
+import utilsforecast
+print(utilsforecast.__version__)
+
+print(company_sales.head())

@@ -14,19 +14,6 @@ Results
 
 Among all benchmark methods, ETS achieved the best overall forecasting performance, providing the lowest average forecasting error and becoming the preferred statistical benchmark for the retail forecasting task. The Global Random Forest model was further developed to leverage cross-store information and engineered features for scalable forecasting.
 
-Repository Structure
-├── notebooks/
-│   ├── EDA & Data Cleaning
-│   ├── Feature Engineering
-│   ├── Benchmark Models
-│   └── Global Random Forest
-├── data/
-│   ├── raw/
-│   └── processed/
-├── results/
-├── poster/
-└── README.md
-
 Technologies
 Python
 Pandas
